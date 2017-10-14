@@ -5,7 +5,9 @@
     <classes>
       <class name="IE.IEOperatorC">
         <methods>
+          <include name="DateMethod2"/>
           <include name="Me"/>
+          <include name="DateMethod3"/>
           <include name="DateMethod1"/>
           <include name="Test1"/>
         </methods>

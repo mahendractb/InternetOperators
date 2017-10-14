@@ -38,6 +38,7 @@ public class IEOperatorC {
 	BookDB db=null;
 	FileWriter fw1,fw2,fw3;
 	int u1=0,u2=0,u3=0;
+	int Excelcity=0;
 	@BeforeMethod
 	public void Test1() throws IOException, InterruptedException, AWTException{
 		DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -106,7 +107,7 @@ public class IEOperatorC {
 	  u1=1;
 	  int uu1=Integer.parseInt(k[3]);
 	  int uu2=Integer.parseInt(k[6]);
-	  f4(uu1,uu2,u1);
+	  f4(uu1,uu2,u1,k[7]);
 	  
   }
   @Test
@@ -116,7 +117,7 @@ public class IEOperatorC {
 	  u2=2;;
 	  int uu1=Integer.parseInt(k[3]);
 	  int uu2=Integer.parseInt(k[6]);
-	  f4(uu1,uu2,u2);
+	  f4(uu1,uu2,u2,k[7]);
   }
   @Test
   public void DateMethod3() throws IOException, InterruptedException, InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, NoSuchAlgorithmException, ParseException {
@@ -125,7 +126,7 @@ public class IEOperatorC {
 	  u3=3;
 	  int uu1=Integer.parseInt(k[3]);
 	  int uu2=Integer.parseInt(k[6]);
-	  f4(uu1,uu2,u3);
+	  f4(uu1,uu2,u3,k[7]);
   }
   //Excel DateReading related Method-------------------------------------------------->
    
@@ -169,6 +170,8 @@ public class IEOperatorC {
 			 Date s1=c1.getDateCellValue();
 			 Cell c2=r1.getCell(2);
 			 int s2=(int) c2.getNumericCellValue();
+			 Cell c3=r1.getCell(3);
+			 String sourcecity=c3.getStringCellValue();
 			 SimpleDateFormat dt1 = new SimpleDateFormat("dd");
 			 String D=dt1.format(s1);
 			 System.out.println("day"+D);//starting day of the jounary 
@@ -180,6 +183,7 @@ public class IEOperatorC {
 			 dd[4]=M;
 			 dd[5]=y;
 			 dd[6]=String.valueOf(s2);
+			 dd[7]=sourcecity;
 			}
 			else
 			{
@@ -187,6 +191,7 @@ public class IEOperatorC {
 				 dd[4]="";
 				 dd[5]="";
 				 dd[6]="";
+				 dd[7]="";
 			}
 			break; 		 
 		 }
@@ -241,7 +246,7 @@ System.out.println("DAter");
  
  
  //Source & destination station related methods
- public void f4(int s,int enddate,int ll) throws IOException, InterruptedException, InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, NoSuchAlgorithmException, ParseException {
+ public void f4(int s,int enddate,int ll,String city) throws IOException, InterruptedException, InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, NoSuchAlgorithmException, ParseException {
 	 	
 		
 	 int f1=0;
@@ -293,9 +298,22 @@ continue;
 			driver.switchTo().defaultContent();
 			driver.switchTo().frame("frameInfo");
 
-			//fw.write("\nSource: "+sou.getText());
-			
-			//counter.selectByVisibleText(sou.getText());
+			//Source city select from excel
+			if(Excelcity==0){
+			if(city.equalsIgnoreCase("no")){
+				System.out.println("No source citry was enter in excel ");
+			}
+			else
+			{
+				for(int index=0;index<l.size();index++){
+					if((l.get(index).getText().equalsIgnoreCase(city))&&Excelcity==0){
+						in=index;
+						Excelcity++;
+						break;
+					}
+				}
+			}
+			}
 			counter.selectByIndex(in);
 			in++;
 			String Source=sou.getText();
