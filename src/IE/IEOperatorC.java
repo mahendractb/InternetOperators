@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 public class IEOperatorC {
 	WebDriver driver;
 	BookDB db=null;
-	FileWriter fw1,fw2,fw3;
+	FileWriter fw1,fw2,fw3,fw;
 	int u1=0,u2=0,u3=0;
 	int Excelcity=0;
 	@BeforeMethod
@@ -46,7 +46,7 @@ public class IEOperatorC {
 		capabilities.setCapability("browserstack.ie.enablePopups", "false");
 		System.setProperty("webdriver.ie.driver", "C:\\Selenium\\IEDriverServer1.exe");
 		 driver=new InternetExplorerDriver(capabilities);
-		 //fw=new FileWriter(new File("code.txt"));
+		 fw=new FileWriter(new File("code.txt"));
 		 String k[]=ExcelDate(5);
 		 
 		 driver.get(k[0]);
@@ -70,7 +70,7 @@ public class IEOperatorC {
 		 //driver.get("http://perdana.eticketing.my/Main/Login.asp");
 		 //driver.findElement(By.name("txtUID")).sendKeys("catchthatbus");
 			//driver.findElement(By.name("txtUPass")).sendKeys("ctb7382");
-			driver.findElement(By.xpath("//table[@class='BlackText']/tbody/tr[7]/td/input[1]")).click();
+			driver.findElement(By.xpath(".//input[@value='Login'or@value='login']")).click();
 
 
 			WebDriverWait wait = new WebDriverWait(driver,10);
@@ -311,12 +311,13 @@ continue;
 						Excelcity++;
 						break;
 					}
+					
 				}
 			}
 			}
 			counter.selectByIndex(in);
 			in++;
-			String Source=sou.getText();
+			String Source=l.get(in-1).getText();
 			System.out.println("Source: "+sou.getText());
 			//driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 			driver.switchTo().defaultContent();
@@ -367,7 +368,7 @@ continue;
 			
 			List<WebElement> dest=driver.findElements(By.className("DestButton"));//destination cities are storing in this list
 			int destCount=dest.size();
-			int destin=0;
+			
 			
 			if(destCount==0){//Destination is zero 
 
@@ -378,7 +379,7 @@ continue;
 			int i=0,j,b;
 			while(i<destCount) //destination cities are available
 			{
-				do{
+				
 				for(WebElement ds:dest)
 				{
 					
@@ -397,8 +398,9 @@ continue;
 					driver.switchTo().defaultContent();
 					driver.switchTo().frame("frameTime");
 					List<WebElement> time=driver.findElements(By.className("DestButton2"));
+					timeframe(time);
 					int timeCount=time.size();
-					destin++;
+					
 					j=0;
 					while(j<timeCount)//timings 
 					{
@@ -470,8 +472,8 @@ double sprice=Double.parseDouble(driver.findElement(By.name("txtSSPric")).getAtt
 						       db.insertBookingDetails(oper1, Source, Destination,hashtext,r5,Route,price,formattedDate, size,cprice,sprice,pickup,drop);
 							
 							System.out.println("operator"+operator+"Jounary date="+JoDate+"source="+Source+"Destinations="+Destination+"Time="+btime+"seats ="+seat.size()+"price=="+price+"Route="+Route+"trip"+r5);
-							//fw.write("Jounary date=="+JoDate+"source=="+Source+"Destinations=="+Destination+"Time=="+btime+"seats=="+seat.size()+"price==="+price+"Route=="+Route+"trip==="+r5);
-							//fw.write("----------------------------------------------------------------------");
+							fw.write("Jounary date=="+JoDate+"source=="+Source+"Destinations=="+Destination+"Time=="+btime+"seats=="+seat.size()+"price==="+price+"Route=="+Route+"trip==="+r5);
+							fw.write("----------------------------------------------------------------------");
 							j++;
 							
 						}
@@ -502,7 +504,7 @@ double sprice=Double.parseDouble(driver.findElement(By.name("txtSSPric")).getAtt
 					
 					i++;
 				}
-				}while(destCount!=destin);
+				
 					if(i%15==0)//when we have more destinations and pagination is available
 					{
 						driver.switchTo().defaultContent();
@@ -551,6 +553,7 @@ double sprice=Double.parseDouble(driver.findElement(By.name("txtSSPric")).getAtt
 			if(ll==3){
 				fw3.close();
 			}
+			fw.close();
 		}
 }
   
@@ -560,4 +563,15 @@ double sprice=Double.parseDouble(driver.findElement(By.name("txtSSPric")).getAtt
   public void Me(){
   driver.close();
   }
+  
+  public void timeframe(List<WebElement> time){
+		 
+	  if(time.size()>0){
+		
+	  }
+	  else{
+		  List<WebElement> time1=driver.findElements(By.className("DestButton2"));
+		  timeframe(time1);
+	  }
+}
 }
